@@ -79,6 +79,24 @@ const Home = ({navigation, route}) => {
     requestPermission();
   }, []);
 
+  // useEffect(() => {
+  //   enumerateDaysBetweenDates('2024-10-10', '2024-10-16');
+  // }, []);
+
+  // var enumerateDaysBetweenDates = function (startDate, endDate) {
+  //   var dates = [];
+
+  //   var currDate = moment(startDate).startOf('day');
+  //   var lastDate = moment(endDate).startOf('day');
+
+  //   while (currDate.add(1, 'days').diff(lastDate) <= 0) {
+  //     console.log(currDate.toDate());
+  //     dates.push(currDate.clone().toDate());
+  //   }
+
+  //   console.log('enumerateDaysBetweenDates', dates);
+  // };
+
   const getRigion = async () => {
     const token = await AsyncStorage.getItem('InExToken');
     const userId = await AsyncStorage.getItem('InExUserId');
@@ -95,8 +113,8 @@ const Home = ({navigation, route}) => {
 
         //console.log('getRigionList_____', findRegionId);
 
-        getRigionsDepotList(findRegionId);
-        getRigionsParcelList(findRegionId);
+        getRigionsDepotList(findRegionId, response?.data?.data);
+        getRigionsParcelList(findRegionId, response?.data?.data);
       } else {
         Alert.alert(
           'Oops!',
@@ -108,15 +126,17 @@ const Home = ({navigation, route}) => {
     }
   };
 
-  const getRigionsDepotList = async region => {
+  const getRigionsDepotList = async (region, responseData) => {
     let sendingData = {
       regions: region,
       type: 'depot',
+      table: responseData[0]?.table,
     };
+    console.log('getRigionsDepotList', sendingData);
     const token = await AsyncStorage.getItem('InExToken');
     //const userId = await AsyncStorage.getItem('InExUserId');
     const response = await auth.regionWiseParcelAndDepot(sendingData, token);
-    console.log('getRigionsDepotList', response);
+
     if (response?.status != 200) {
       Alert.alert(
         'Oops!',
@@ -128,16 +148,18 @@ const Home = ({navigation, route}) => {
       setregionWiseDepotList(response?.data);
     }
   };
-  const getRigionsParcelList = async region => {
+  const getRigionsParcelList = async (region, responseData) => {
     let sendingData = {
       regions: region,
       //regions: [1],
       type: 'parcel',
+      table: responseData[0]?.table,
     };
+    console.log('getRigionsParcelList', sendingData);
     const token = await AsyncStorage.getItem('InExToken');
     //const userId = await AsyncStorage.getItem('InExUserId');
     const response = await auth.regionWiseParcelAndDepot(sendingData, token);
-    console.log('getRigionsParcelList', response);
+
     if (response?.status != 200) {
       Alert.alert(
         'Oops!',

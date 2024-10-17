@@ -105,7 +105,7 @@ export default function QrTable({
                     alignItems: 'center',
                   }}>
                   <Text style={styles.tableListDetailText} numberOfLines={1}>
-                    {renderData[0]}
+                    {renderData?.length == 6 ? renderData[0] : renderData[1]}
                   </Text>
                 </View>
                 <View
@@ -117,7 +117,7 @@ export default function QrTable({
                     borderRightWidth: 1,
                   }}>
                   <Text style={styles.tableListDetailText} numberOfLines={1}>
-                    {renderData[5]}
+                    {renderData?.length == 6 ? renderData[5] : '--'}
                   </Text>
                 </View>
                 <View

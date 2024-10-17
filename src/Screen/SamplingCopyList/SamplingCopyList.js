@@ -75,8 +75,8 @@ export default function SamplingCopyList({route, navigation}) {
 
         //console.log('getRigionList_____', findRegionId);
 
-        getRigionsDepotList(findRegionId);
-        getRigionsParcelList(findRegionId);
+        getRigionsDepotList(findRegionId, response?.data?.data);
+        getRigionsParcelList(findRegionId, response?.data?.data);
       } else {
         Alert.alert(
           'Oops!',
@@ -88,10 +88,11 @@ export default function SamplingCopyList({route, navigation}) {
     }
   };
 
-  const getRigionsDepotList = async region => {
+  const getRigionsDepotList = async (region, responseData) => {
     let sendingData = {
       regions: region,
       type: 'depot',
+      table: responseData[0]?.table,
     };
     const token = await AsyncStorage.getItem('InExToken');
     //const userId = await AsyncStorage.getItem('InExUserId');
@@ -108,11 +109,12 @@ export default function SamplingCopyList({route, navigation}) {
       setregionWiseDepotList(response?.data);
     }
   };
-  const getRigionsParcelList = async region => {
+  const getRigionsParcelList = async (region, responseData) => {
     let sendingData = {
       regions: region,
       //regions: [1],
       type: 'parcel',
+      table: responseData[0]?.table,
     };
     const token = await AsyncStorage.getItem('InExToken');
     //const userId = await AsyncStorage.getItem('InExUserId');
