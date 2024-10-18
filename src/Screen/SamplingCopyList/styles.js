@@ -3,7 +3,7 @@ import COLORS from '../../GlobalConstants/COLORS';
 export default StyleSheet.create({
   container: {flex: 1},
   bottomView: {
-    width: '100%',
+    width: '10%',
     //height: 50,
     backgroundColor: 'transparent',
     justifyContent: 'center',
@@ -115,13 +115,13 @@ export default StyleSheet.create({
   textInputStyle: {
     borderWidth: 1,
     borderColor: 'lightgrey',
-    height: 26,
+    //height: 26,
     width: '100%',
     color: 'black',
-    paddingVertical: 1,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
-    textAlign: 'center',
+    //textAlign: 'center',
   },
   disableTextStyle: {
     borderWidth: 1,

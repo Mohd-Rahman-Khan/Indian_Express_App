@@ -228,10 +228,23 @@ const savePrintOrder = (dataObj, token) =>
     {...dataObj},
     {headers: {Authorization: token}},
   );
+const saveSamplingCopy = (dataObj, token) =>
+  client.apiClient.post(
+    '/sample/save-sample-copy',
+    {...dataObj},
+    {headers: {Authorization: token}},
+  );
 
 const getPrintOrder = (dataObj, token) =>
   client.apiClient.post(
     '/print/get-print-order-of-mapped-user-mob',
+    {...dataObj},
+    {headers: {Authorization: token}},
+  );
+
+const getSamplingCopy = (dataObj, token) =>
+  client.apiClient.post(
+    '/sample/get-sample-copy-of-mapped-user-mob',
     {...dataObj},
     {headers: {Authorization: token}},
   );
@@ -270,9 +283,22 @@ const updatePrintOrder = (dataObj, token) =>
     {headers: {Authorization: token}},
   );
 
+const updateSampligCopy = (dataObj, token) =>
+  client.apiClient.post(
+    '/sample/update-sample-copy-trade',
+    {...dataObj},
+    {headers: {Authorization: token}},
+  );
 const verifyRejectPrintOrder = (dataObj, token) =>
   client.apiClient.post(
     '/print/update-print-order-status',
+    {...dataObj},
+    {headers: {Authorization: token}},
+  );
+
+const verifyRejectSampleCopy = (dataObj, token) =>
+  client.apiClient.post(
+    '/sample/update-sample-copy-status',
     {...dataObj},
     {headers: {Authorization: token}},
   );
@@ -315,6 +341,13 @@ const generateReceipt = (data, token) =>
 const getTodayTradeSupply = (data, token) =>
   client.getApiRequest.get(
     `supply/view-trade/${data}`,
+    {},
+    {headers: {Authorization: token}},
+  );
+
+const getTodayTradeSupplyCopy = (data, token) =>
+  client.getApiRequest.get(
+    `supply/view-trade-sampling-copy/${data}`,
     {},
     {headers: {Authorization: token}},
   );
@@ -363,4 +396,9 @@ export default {
   updatePrintOrder,
   getDashboardOfPrintOrder,
   getAttendenceRadius,
+  getTodayTradeSupplyCopy,
+  saveSamplingCopy,
+  getSamplingCopy,
+  updateSampligCopy,
+  verifyRejectSampleCopy,
 };

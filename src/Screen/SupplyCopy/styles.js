@@ -277,10 +277,10 @@ export default StyleSheet.create({
     borderColor: 'lightgrey',
     width: '100%',
     color: 'black',
-    paddingVertical: 1,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
-    textAlign: 'center',
+    //textAlign: 'center',
   },
   plusMinusBottonBox: {width: '12%'},
   newSupplyContainer: {

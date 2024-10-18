@@ -50,48 +50,7 @@ const SupplyCopy = ({navigation}) => {
 
   const [dateType, setdateType] = useState('');
 
-  const [publicationList, setpublicationList] = useState([
-    {
-      id: 1,
-      trade_name: 'Indian Express',
-      trade: 125,
-      updated_value: 125,
-      difference: 0,
-      supply_id: 2300207,
-    },
-    {
-      id: 1,
-      trade_name: 'Financial Express',
-      trade: 125,
-      updated_value: 125,
-      difference: 0,
-      supply_id: 2300207,
-    },
-    {
-      id: 1,
-      trade_name: 'Loksatta',
-      trade: 125,
-      updated_value: 125,
-      difference: 0,
-      supply_id: 2300207,
-    },
-    {
-      id: 1,
-      trade_name: 'Lokprabha',
-      trade: 125,
-      updated_value: 125,
-      difference: 0,
-      supply_id: 2300207,
-    },
-    {
-      id: 1,
-      trade_name: 'Jansatta',
-      trade: 125,
-      updated_value: 125,
-      difference: 0,
-      supply_id: 2300207,
-    },
-  ]);
+  const [publicationList, setpublicationList] = useState([]);
 
   useEffect(() => {
     depotApi();
@@ -123,6 +82,49 @@ const SupplyCopy = ({navigation}) => {
     );
   };
 
+  useEffect(() => {
+    getTodayTradeSupply();
+  }, [depotItem, userData]);
+
+  const getTodayTradeSupply = async () => {
+    //setloading(true);
+    const userId = await AsyncStorage.getItem('InExUserId');
+    if (userData && depotItem) {
+      //console.log('depotItem', depotItem);
+      const token = await AsyncStorage.getItem('InExToken');
+      const response = await auth.getTodayTradeSupplyCopy(
+        `${depotItem?.user_id}`,
+        token,
+      );
+      console.log('getTodayTradeSupply', response);
+      setloading(false);
+
+      // console.log('getTodayTradeSupply', userData);
+      // console.log('getTodayTradeSupply', depotItem);
+
+      if (response?.data?.code == 200) {
+        setpublicationList(response?.data?.data);
+      } else {
+        Alert.alert(
+          'Oops!',
+          'something went wrong, please try later!',
+          [
+            {
+              text: 'OK',
+              onPress: async () => {
+                // await AsyncStorage.removeItem('InExToken');
+                // await AsyncStorage.removeItem('InExUserId');
+                // await AsyncStorage.removeItem('InExUserDetails');
+                // NavigationService.reset(navigation, 'Login');
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+    }
+  };
+
   const depotApi = async () => {
     const token = await AsyncStorage.getItem('InExToken');
     const userId = await AsyncStorage.getItem('InExUserId');
@@ -145,14 +147,7 @@ const SupplyCopy = ({navigation}) => {
     }
   };
 
-  const rowItemView = (
-    lbl,
-    value = 0,
-    enableFlag,
-    type,
-    showButton = false,
-    item,
-  ) => {
+  const rowItemView = item => {
     return (
       <View
         style={[
@@ -168,7 +163,7 @@ const SupplyCopy = ({navigation}) => {
         ]}>
         <View>
           <Text numberOfLines={2} style={{fontSize: 18, fontWeight: 'bold'}}>
-            {lbl}
+            {item?.trade_name}
           </Text>
         </View>
 
@@ -180,11 +175,110 @@ const SupplyCopy = ({navigation}) => {
             style={styles.textInputStyle}
             value={item?.updated_value.toString()}
             keyboardType={'numeric' || 'number-pad'}
-            onChangeText={text => onChangeTextValue(text, type, item)}
+            onChangeText={text => onChangeTextValue(text, item)}
           />
         </View>
       </View>
     );
+  };
+
+  const onChangeTextValue = (text, item) => {
+    if (text == '') {
+      let newArr = publicationList.map(rederItem => {
+        if (rederItem?.id == item?.id) {
+          rederItem.updated_value = 0;
+          rederItem.difference = item.updated_value - item?.trade;
+          return {...rederItem};
+        } else {
+          return rederItem;
+        }
+      });
+      setpublicationList(newArr);
+    } else {
+      let newArr = publicationList.map(rederItem => {
+        if (rederItem?.id == item?.id) {
+          let newValue = parseInt(text);
+          rederItem.updated_value = newValue;
+          rederItem.difference = item.updated_value - item?.trade;
+          return {...rederItem};
+        } else {
+          return rederItem;
+        }
+      });
+      setpublicationList(newArr);
+    }
+  };
+
+  const submitAction = async () => {
+    const token = await AsyncStorage.getItem('InExToken');
+    const userId = await AsyncStorage.getItem('InExUserId');
+
+    if (
+      passFromDateToApi == 'Please select date...' ||
+      passToDateToApi == 'Please select date...'
+    ) {
+      Alert.alert(
+        'Oops!',
+        'Please select from and to date.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+
+      return;
+    }
+
+    setloading(true);
+
+    let dataObj = {
+      user_id: depotItem?.user_id,
+      total_updated_data: publicationList,
+      from_date: passFromDateToApi,
+      to_date: passToDateToApi,
+      //date_type: 'weekday',
+    };
+
+    console.log('submitAction', dataObj);
+
+    let response = await auth.saveSamplingCopy(dataObj, token);
+    setloading(false);
+
+    console.log('submitAction', response);
+
+    if (response?.data?.code == 200 || response?.data?.code == 201) {
+      Alert.alert(
+        'Success',
+        'Sampling copy Added successfully.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setTimeout(() => {
+                navigation.navigate('SamplingCopyList');
+              }, 1000);
+            },
+          },
+        ],
+        {cancelable: false},
+      );
+    } else {
+      setloading(false);
+      Alert.alert(
+        'Oops!',
+        response.data?.message ? response.data?.message : response?.problem,
+        [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    }
   };
 
   return (
@@ -199,7 +293,6 @@ const SupplyCopy = ({navigation}) => {
             closeModal={() => {
               setshowCalender(!showCalender);
               setselectFromDate(false);
-              setselectPODateDate(false);
             }}
             minDate={moment(new Date()).format('YYYY-MM-DD')}
             setselectedDate={date => {
@@ -296,11 +389,7 @@ const SupplyCopy = ({navigation}) => {
             }}>
             {publicationList?.length > 0 ? (
               publicationList.map(item => {
-                return (
-                  <View key={item?.id}>
-                    {rowItemView(item?.trade_name, true, 4, true, item)}
-                  </View>
-                );
+                return <View key={item?.trade_name}>{rowItemView(item)}</View>;
               })
             ) : (
               <View
@@ -321,7 +410,9 @@ const SupplyCopy = ({navigation}) => {
             <View>
               <TouchableOpacity
                 disabled={publicationList.length > 0 ? false : true}
-                onPress={() => {}}>
+                onPress={() => {
+                  submitAction();
+                }}>
                 <View
                   style={[
                     styles.canclebtn,
@@ -346,7 +437,7 @@ const SupplyCopy = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
-      <View style={styles.bottomView}>
+      {/* <View style={styles.bottomView}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('SamplingCopyList');
@@ -354,7 +445,7 @@ const SupplyCopy = ({navigation}) => {
           style={styles.addIconContainer}>
           <Image style={styles.plusIcon} source={images.file} />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </>
   );
 };

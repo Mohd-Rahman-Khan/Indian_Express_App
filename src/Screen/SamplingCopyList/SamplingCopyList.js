@@ -20,7 +20,7 @@ import moment from 'moment';
 import {ButtonView} from '../../Helper/buttonView';
 import RemarkPopup from '../CollectionList/RemarkPopup';
 import Header from '../../comonent/Header/Header';
-//import EditButton from './EditButton';
+import EditButton from './EditButton';
 import CheckBox from 'react-native-check-box';
 import CustomDropdown from '../../comonent/CustomDropdown';
 
@@ -32,7 +32,6 @@ export default function SamplingCopyList({route, navigation}) {
   const [parcelSelect, setparcelSelect] = useState(false);
   const [editOrderDetail, seteditOrderDetail] = useState('');
   const [loading, setloading] = useState(false);
-  const [editPrintOrder, seteditPrintOrder] = useState(false);
   const [remark, setremark] = useState('');
   const [showRemarkPopup, setshowRemarkPopup] = useState(false);
   const [clickItemData, setclickItemData] = useState('');
@@ -55,7 +54,7 @@ export default function SamplingCopyList({route, navigation}) {
       userData?.role == 'Depot Salesman' ||
       userData?.role == 'Parcel Vendor'
     ) {
-      getprintOrderList();
+      getSamplingCopyList();
     }
   };
 
@@ -132,7 +131,7 @@ export default function SamplingCopyList({route, navigation}) {
     }
   };
 
-  const getprintOrderList = async selectedDepoItem => {
+  const getSamplingCopyList = async selectedDepoItem => {
     setloading(true);
     const token = await AsyncStorage.getItem('InExToken');
     const userData1 = await AsyncStorage.getItem('InExUserDetails');
@@ -158,9 +157,9 @@ export default function SamplingCopyList({route, navigation}) {
       };
     }
 
-    console.log('getprintOrderList', sendingData);
-    const response = await auth.getPrintOrder(sendingData, token);
-    console.log('getprintOrderList', response);
+    console.log('getSamplingCopyList', sendingData);
+    const response = await auth.getSamplingCopy(sendingData, token);
+    console.log('getSamplingCopyList', response);
     setloading(false);
     if (response?.data?.code == 200 || response?.data?.code == 201) {
       setprintOrderList(response.data?.data);
@@ -185,12 +184,12 @@ export default function SamplingCopyList({route, navigation}) {
       user_id: userData?.id,
       remark: remark ? remark : null,
     };
-    const response = await auth.verifyRejectPrintOrder(sendingData, token);
+    const response = await auth.verifyRejectSampleCopy(sendingData, token);
     console.log('verifyRejectRequest', sendingData);
     setloading(false);
 
     if (response?.data?.code == 200 || response?.data?.code == 201) {
-      getprintOrderList(depotItem);
+      getSamplingCopyList(depotItem);
       Alert.alert(
         'Success',
         response?.data?.message,
@@ -253,13 +252,13 @@ export default function SamplingCopyList({route, navigation}) {
       publications: item?.publications,
     };
     console.log('findEditPrintData', sendingData);
-    const response = await auth.updatePrintOrder(sendingData, token);
+    const response = await auth.updateSampligCopy(sendingData, token);
     console.log('verifyRejectRequest', response);
     setloading(false);
 
     if (response?.data?.code == 200 || response?.data?.code == 201) {
       setTimeout(() => {
-        getprintOrderList(depotItem);
+        getSamplingCopyList(depotItem);
       }, 1000);
       Alert.alert(
         'Success',
@@ -414,7 +413,7 @@ export default function SamplingCopyList({route, navigation}) {
                 {item?.status}
               </Text>
 
-              {/* {(userDetail?.role === 'Depot Salesman' ||
+              {(userDetail?.role === 'Depot Salesman' ||
                 userDetail?.role === 'Parcel Vendor') &&
               (item?.status == 'REJECTED' || item?.status == 'PENDING') ? (
                 <EditButton
@@ -442,7 +441,7 @@ export default function SamplingCopyList({route, navigation}) {
                     seteditOrderDetail(item);
                   }}
                 />
-              ) : null} */}
+              ) : null}
             </View>
           </View>
         </View>
@@ -450,7 +449,6 @@ export default function SamplingCopyList({route, navigation}) {
         {item?.editable ? (
           <>
             {item?.publications?.map(listItem => {
-              console.log('listItem', listItem);
               return (
                 <View
                   key={listItem?.id}
@@ -474,185 +472,14 @@ export default function SamplingCopyList({route, navigation}) {
                       {listItem?.trade_name}
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 10,
-                    }}>
-                    <View style={{width: '24%'}}>
-                      <Text>PO</Text>
-                    </View>
-                    <View
-                      style={{
-                        width: '74%',
-                        alignItems: 'center',
-                        backgroundColor: COLORS.lightGreyBorder,
-                        height: 30,
-                        justifyContent: 'center',
-                      }}>
-                      <Text>{listItem?.trade}</Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 10,
-                    }}>
-                    <View style={{width: '24%'}}>
-                      <Text>Revision</Text>
-                    </View>
-                    <View
-                      style={{
-                        width: '74%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}>
-                      <View style={{width: '12%'}}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            let findEditableItem = printOrderList.find(
-                              editItem => editItem?.editable,
-                            );
-
-                            if (listItem?.trade > 0) {
-                              let newArr = findEditableItem?.publications.map(
-                                rederItem => {
-                                  if (rederItem?.id == listItem?.id) {
-                                    console.log('findEditableItem', rederItem);
-                                    rederItem.updated_value =
-                                      rederItem?.updated_value - 1;
-                                    rederItem.difference =
-                                      rederItem.updated_value -
-                                      rederItem?.trade;
-                                    return {...rederItem};
-                                  } else {
-                                    return rederItem;
-                                  }
-                                },
-                              );
-
-                              // console.log('findEditableItem', newArr);
-                              let updatePrintOrderList = printOrderList.map(
-                                pItem => {
-                                  if (
-                                    pItem?.print_order_id ==
-                                    newArr?.print_order_id
-                                  ) {
-                                    return {...newArr};
-                                  } else {
-                                    return {...pItem};
-                                  }
-                                },
-                              );
-                              // console.log(
-                              //   'updatePrintOrderList',
-                              //   updatePrintOrderList,
-                              // );
-                              setprintOrderList(updatePrintOrderList);
-                            }
-                          }}
-                          style={styles.iconButtonContainer}>
-                          <Image
-                            style={styles.iconStyle}
-                            source={images.minusIcon}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                      <View style={{width: '46%'}}>
-                        <TextInput
-                          style={styles.textInputStyle}
-                          value={listItem?.updated_value.toString()}
-                          //value={listItem?.updated_value}
-                          keyboardType={'numeric' || 'number-pad'}
-                          onChangeText={text =>
-                            onChangeTextValue(text, listItem)
-                          }
-                        />
-                      </View>
-                      <View style={{width: '12%'}}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            let findEditableItem = printOrderList.find(
-                              editItem => editItem?.editable,
-                            );
-
-                            if (listItem?.trade > 0) {
-                              let newArr = findEditableItem?.publications.map(
-                                rederItem => {
-                                  if (rederItem?.id == listItem?.id) {
-                                    console.log('findEditableItem', rederItem);
-                                    rederItem.updated_value =
-                                      rederItem?.updated_value + 1;
-                                    rederItem.difference =
-                                      rederItem.updated_value -
-                                      rederItem?.trade;
-                                    return {...rederItem};
-                                  } else {
-                                    return rederItem;
-                                  }
-                                },
-                              );
-
-                              // console.log('findEditableItem', newArr);
-                              let updatePrintOrderList = printOrderList.map(
-                                pItem => {
-                                  if (
-                                    pItem?.print_order_id ==
-                                    newArr?.print_order_id
-                                  ) {
-                                    return {...newArr};
-                                  } else {
-                                    return {...pItem};
-                                  }
-                                },
-                              );
-                              // console.log(
-                              //   'updatePrintOrderList',
-                              //   updatePrintOrderList,
-                              // );
-                              setprintOrderList(updatePrintOrderList);
-                            }
-                          }}
-                          style={styles.iconButtonContainer}>
-                          <Image
-                            style={styles.iconStyle}
-                            source={images.plusIcon}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                      <View
-                        style={{
-                          width: '25%',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderWidth: 1,
-                          borderColor: COLORS.lightGreyBorder,
-                          paddingVertical: 6,
-                          borderRadius: 5,
-                        }}>
-                        <Text
-                          style={{
-                            color:
-                              listItem.updated_value - listItem?.trade < 0
-                                ? 'red'
-                                : 'green',
-                            fontWeight: 'bold',
-                            fontSize: 10,
-                            textAlign: 'center',
-                          }}>
-                          {/* {item?.difference <= 0
-                    ? item?.difference
-                    : '+' + item?.difference} */}
-
-                          {listItem?.difference}
-                        </Text>
-                      </View>
-                    </View>
+                  <View style={{marginTop: 10}}>
+                    <TextInput
+                      style={styles.textInputStyle}
+                      value={listItem?.updated_value.toString()}
+                      //value={listItem?.updated_value}
+                      keyboardType={'numeric' || 'number-pad'}
+                      onChangeText={text => onChangeTextValue(text, listItem)}
+                    />
                   </View>
                 </View>
               );
@@ -768,7 +595,7 @@ export default function SamplingCopyList({route, navigation}) {
             userDetail?.role == 'Circulation Executive' ||
             userDetail?.role == 'Regional Manager'
           ) {
-            navigation.navigate('PrintOrderDashboard');
+            navigation.navigate('SamplingCopyDashboard');
           } else {
             navigation.navigate('SelectionOfPrintOrder');
           }
@@ -793,19 +620,6 @@ export default function SamplingCopyList({route, navigation}) {
           }}
         />
       ) : null}
-      {/* {editPrintOrder ? (
-        <EditPrintOrder
-          editData={editOrderDetail?.no_of_supply}
-          showModal={editPrintOrder}
-          onClose={() => {
-            seteditPrintOrder(false);
-          }}
-          sumitAction={val => {
-            seteditPrintOrder(false);
-            alert(val);
-          }}
-        />
-      ) : null} */}
 
       {userDetail?.role == 'Parcel Vendor' ||
       userDetail?.role == 'Depot Salesman' ? null : (
@@ -856,7 +670,7 @@ export default function SamplingCopyList({route, navigation}) {
                 itemHandler={item => {
                   console.log('itemHandler', item);
                   setDepotItem(item);
-                  getprintOrderList(item);
+                  getSamplingCopyList(item);
                 }}
                 search={true}
               />
@@ -868,7 +682,7 @@ export default function SamplingCopyList({route, navigation}) {
                 selectedItem={depotItem?.name}
                 itemHandler={item => {
                   setDepotItem(item);
-                  getprintOrderList(item);
+                  getSamplingCopyList(item);
                 }}
                 search={true}
               />
@@ -893,14 +707,16 @@ export default function SamplingCopyList({route, navigation}) {
 
       {userDetail?.role == 'Depot Salesman' ||
       userDetail?.role == 'Parcel Vendor' ? (
-        <View style={styles.bottomView}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('PrintOrder');
-            }}
-            style={styles.addIconContainer}>
-            <Image style={styles.plusIcon} source={images.plusIcon} />
-          </TouchableOpacity>
+        <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+          <View style={styles.bottomView}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SupplyCopy');
+              }}
+              style={styles.addIconContainer}>
+              <Image style={styles.plusIcon} source={images.plusIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
       ) : null}
     </View>

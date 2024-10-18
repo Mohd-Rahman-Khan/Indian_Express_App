@@ -7,17 +7,29 @@ import images from '../../Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectionOfPrintOrder({route, navigation}) {
-  const handleClick = async () => {
+  const handleClick = async type => {
     const userData = await AsyncStorage.getItem('InExUserDetails');
 
     let parseUserData = JSON.parse(userData);
-    if (
-      parseUserData?.role == 'Circulation Executive' ||
-      parseUserData?.role == 'Regional Manager'
-    ) {
-      navigation.navigate('PrintOrderDashboard');
+
+    if (type == 'PrintOrder') {
+      if (
+        parseUserData?.role == 'Circulation Executive' ||
+        parseUserData?.role == 'Regional Manager'
+      ) {
+        navigation.navigate('PrintOrderDashboard');
+      } else {
+        navigation.navigate('PrintOrderList');
+      }
     } else {
-      navigation.navigate('PrintOrderList');
+      if (
+        parseUserData?.role == 'Circulation Executive' ||
+        parseUserData?.role == 'Regional Manager'
+      ) {
+        navigation.navigate('SamplingCopyDashboard');
+      } else {
+        navigation.navigate('SamplingCopyList');
+      }
     }
   };
   return (
@@ -42,7 +54,7 @@ export default function SelectionOfPrintOrder({route, navigation}) {
           text="Print Order"
           fullWidth={true}
           handleCardClick={() => {
-            handleClick();
+            handleClick('PrintOrder');
           }}
         />
 
@@ -51,7 +63,7 @@ export default function SelectionOfPrintOrder({route, navigation}) {
           text="PO Sampling Copies"
           fullWidth={true}
           handleCardClick={() => {
-            navigation.navigate('SupplyCopy');
+            handleClick('SamplingCopies');
           }}
         />
       </View>
