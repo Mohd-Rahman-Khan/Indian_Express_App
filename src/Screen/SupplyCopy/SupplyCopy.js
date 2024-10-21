@@ -93,7 +93,7 @@ const SupplyCopy = ({navigation}) => {
       //console.log('depotItem', depotItem);
       const token = await AsyncStorage.getItem('InExToken');
       const response = await auth.getTodayTradeSupplyCopy(
-        `${depotItem?.user_id}`,
+        `${depotItem?.ship_to_code}`,
         token,
       );
       console.log('getTodayTradeSupply', response);
@@ -235,7 +235,7 @@ const SupplyCopy = ({navigation}) => {
     setloading(true);
 
     let dataObj = {
-      user_id: depotItem?.user_id,
+      user_id: depotItem?.ship_to_code,
       total_updated_data: publicationList,
       from_date: passFromDateToApi,
       to_date: passToDateToApi,

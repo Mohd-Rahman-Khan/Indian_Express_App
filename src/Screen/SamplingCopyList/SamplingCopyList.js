@@ -136,7 +136,8 @@ export default function SamplingCopyList({route, navigation}) {
     const token = await AsyncStorage.getItem('InExToken');
     const userData1 = await AsyncStorage.getItem('InExUserDetails');
     const userData = JSON.parse(userData1);
-    const userId = await AsyncStorage.getItem('InExUserId');
+    // const userId = await AsyncStorage.getItem('InExUserId');
+    const userId = userData?.loginId;
 
     //setuserDetail(userData);
 
@@ -181,7 +182,7 @@ export default function SamplingCopyList({route, navigation}) {
     let sendingData = {
       print_order_id: print_order_id,
       status: status,
-      user_id: userData?.id,
+      user_id: userData?.loginId,
       remark: remark ? remark : null,
     };
     const response = await auth.verifyRejectSampleCopy(sendingData, token);
@@ -244,7 +245,7 @@ export default function SamplingCopyList({route, navigation}) {
     }
 
     let sendingData = {
-      user_id: userId,
+      user_id: userDetails?.loginId,
       // print_order_id: findEditPrintData?.print_order_id,
       print_order_id: item?.print_order_id,
       status: status,

@@ -178,7 +178,7 @@ export default function PrintOrderDashboard({route, navigation}) {
     const userId = await AsyncStorage.getItem('InExUserId');
     const token = await AsyncStorage.getItem('InExToken');
 
-    let url = `print/get-print-order-summary?id=${userId}&fromDate=${passDate}`;
+    let url = `print/get-print-order-summary?id=${parseUserData?.loginId}&fromDate=${passDate}`;
 
     // if (parseUserData?.role == 'Regional Manager') {
     //   url = `print/get-print-order-report-for-regional-manager/${userId}?fromDate=${passDate}`;
@@ -186,7 +186,7 @@ export default function PrintOrderDashboard({route, navigation}) {
     //   url = `print/get-print-order-report-for-circulationExe/${userId}?fromDate=${passDate}`;
     // } else {
     // }
-    console.log('getDashboardDetail', url);
+    console.log('getDashboardDetail', parseUserData);
 
     const response = await auth.getDashboardOfPrintOrder(url, token);
     setisLoading(false);

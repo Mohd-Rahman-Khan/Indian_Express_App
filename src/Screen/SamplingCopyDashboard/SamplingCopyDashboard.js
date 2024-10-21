@@ -176,7 +176,7 @@ export default function SamplingCopyDashboard({route, navigation}) {
     const userId = await AsyncStorage.getItem('InExUserId');
     const token = await AsyncStorage.getItem('InExToken');
 
-    let url = `sample/get-sample-copy-summary?id=${userId}&fromDate=${passDate}`;
+    let url = `sample/get-sample-copy-summary?id=${parseUserData?.loginId}&fromDate=${passDate}`;
 
     const response = await auth.getDashboardOfPrintOrder(url, token);
     setisLoading(false);

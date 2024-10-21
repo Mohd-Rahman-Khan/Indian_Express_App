@@ -153,10 +153,10 @@ const PrintOrder = ({navigation}) => {
     //setloading(true);
     const userId = await AsyncStorage.getItem('InExUserId');
     if (userData && depotItem) {
-      //console.log('depotItem', depotItem);
+      console.log('depotItem', depotItem);
       const token = await AsyncStorage.getItem('InExToken');
       const response = await auth.getTodayTradeSupply(
-        `${depotItem?.user_id}?date=${passPODateToApi}`,
+        `${depotItem?.ship_to_code}?date=${passPODateToApi}`,
         token,
       );
       console.log('getTodayTradeSupply', response);
@@ -518,7 +518,7 @@ const PrintOrder = ({navigation}) => {
     setloading(true);
 
     let dataObj = {
-      user_id: depotItem?.user_id,
+      user_id: depotItem?.ship_to_code,
       total_updated_data: publicationList,
       from_date: isWeekeend ? passweekEndDateToApi : passFromDateToApi,
       to_date:
