@@ -89,7 +89,7 @@ export default function UnsoldReturnList({route, navigation}) {
         </View>
       )}
 
-      <View style={styles.bottomView}>
+      {/* <View style={styles.bottomView}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('UnsoldRetun');
@@ -97,7 +97,7 @@ export default function UnsoldReturnList({route, navigation}) {
           style={styles.addIconContainer}>
           <Image style={styles.plusIcon} source={images.plusIcon} />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 }

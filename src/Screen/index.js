@@ -27,6 +27,7 @@ import SupplyCopy from './SupplyCopy/SupplyCopy';
 import SelectionOfPrintOrder from './SelectionOfPrintOrder/SelectionOfPrintOrder';
 import SamplingCopyList from './SamplingCopyList/SamplingCopyList';
 import SamplingCopyDashboard from './SamplingCopyDashboard/SamplingCopyDashboard';
+import DailySalesDashboard from './DailySalesDashboard/DailySalesDashboard';
 
 export {
   Splash,
@@ -58,4 +59,5 @@ export {
   SelectionOfPrintOrder,
   SamplingCopyList,
   SamplingCopyDashboard,
+  DailySalesDashboard,
 };

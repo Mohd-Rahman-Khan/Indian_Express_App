@@ -541,10 +541,10 @@ const Home = ({navigation, route}) => {
 
   const getAttendenceRadius = async loginUserDetail => {
     if (
-      loginUserDetail?.role == 'Collection Executive' ||
-      loginUserDetail?.role == 'Circulation Executive' ||
-      loginUserDetail?.role == 'Regional Manager'
+      loginUserDetail?.role == 'Depot Salesman' ||
+      loginUserDetail?.role == 'Parcel Vendor'
     ) {
+    } else {
       const token = await AsyncStorage.getItem('InExToken');
       const response = await auth.getAttendenceRadius(token);
       console.log('getAttendenceRadius', response);
@@ -574,19 +574,25 @@ const Home = ({navigation, route}) => {
       userDetails?.role === 'Parcel Vendor'
     ) {
       setRoleBasedGrid(1); // unsold tile
-      setRoleBasedName('Unsold/ Return');
+      // setRoleBasedName('Unsold/ Return');
+      setRoleBasedName('Daily Sales Report');
     }
     if (userDetails?.role === 'Collection Executive') {
       setRoleBasedGrid(2); //collection tile
       setRoleBasedName('Collection');
     }
-    if (userDetails?.role === 'Circulation Executive') {
+    if (
+      userDetails?.role === 'Circulation Executive' ||
+      userDetails?.role === 'City Head'
+    ) {
       setRoleBasedGrid(3); // approve tile
-      setRoleBasedName('Verify Unsold/Return');
+      // setRoleBasedName('Verify Unsold/Return');
+      setRoleBasedName('Verify Daily Sales Report');
     }
     if (userDetails?.role === 'Regional Manager') {
       setRoleBasedGrid(4); // approve tile
-      setRoleBasedName('Verify Unsold/Return');
+      // setRoleBasedName('Verify Unsold/Return');
+      setRoleBasedName('Verify Daily Sales Report');
     }
   };
 
@@ -757,10 +763,14 @@ const Home = ({navigation, route}) => {
                 }}>
                 <Card
                   image={images.return}
-                  text="Unsold/ Return"
+                  // text="Unsold/ Return"
+                  text="Daily Sales Report"
                   //handleCardClick={() => navigation.navigate('UnsoldRetun')}
                   handleCardClick={() =>
-                    navigation.navigate('UnsoldReturnList')
+                    // navigation.navigate('UnsoldReturnList')
+                    navigation.navigate('DailySalesDashboard', {
+                      roleBasedGrid: roleBasedGrid,
+                    })
                   }
                 />
                 <Card
@@ -866,9 +876,16 @@ const Home = ({navigation, route}) => {
                 <Card
                   image={images.return}
                   text={roleBasedName}
+                  // handleCardClick={() =>
+                  //   navigation.navigate('ApprovalDashboard2', {
+                  //     titleName: roleBasedName,
+                  //   })
+                  // }
+
                   handleCardClick={() =>
-                    navigation.navigate('ApprovalDashboard2', {
+                    navigation.navigate('DailySalesDashboard', {
                       titleName: roleBasedName,
+                      roleBasedGrid: roleBasedGrid,
                     })
                   }
                 />
@@ -936,9 +953,15 @@ const Home = ({navigation, route}) => {
                 <Card
                   image={images.return}
                   text={roleBasedName}
+                  // handleCardClick={() =>
+                  //   navigation.navigate('UnsoldReturnApprovalDashboard', {
+                  //     roleBasedGrid: 1,
+                  //   })
+                  // }
+
                   handleCardClick={() =>
-                    navigation.navigate('UnsoldReturnApprovalDashboard', {
-                      roleBasedGrid: 1,
+                    navigation.navigate('DailySalesDashboard', {
+                      roleBasedGrid: roleBasedGrid,
                     })
                   }
                 />

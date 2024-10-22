@@ -31,6 +31,7 @@ import {
   SelectionOfPrintOrder,
   SamplingCopyList,
   SamplingCopyDashboard,
+  DailySalesDashboard,
 } from '../../Screen';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import images from '../../Image';
@@ -179,6 +180,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="SamplingCopyDashboard"
           component={SamplingCopyDashboard}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DailySalesDashboard"
+          component={DailySalesDashboard}
           options={{headerShown: false}}
         />
         <Stack.Screen

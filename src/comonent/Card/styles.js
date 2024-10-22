@@ -21,5 +21,6 @@ export default StyleSheet.create({
     //top: '59%',
     letterSpacing: 1,
     marginTop: 5,
+    textAlign: 'center',
   },
 });
