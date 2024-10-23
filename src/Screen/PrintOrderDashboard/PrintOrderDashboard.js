@@ -226,7 +226,7 @@ export default function PrintOrderDashboard({route, navigation}) {
             setshowCalender(!showCalender);
             setselectFromDate(false);
           }}
-          //smaxDate={moment(new Date()).format('YYYY-MM-DD')}
+          //maxDate={moment(new Date()).format('YYYY-MM-DD')}
           setselectedDate={date => {
             //setSelectedDate(moment(date).format("DD-MM-YYYY"));
             setshowCalender(!showCalender);

@@ -198,7 +198,7 @@ export default function DailySalesDashboard({route, navigation}) {
             setshowCalender(!showCalender);
             setselectFromDate(false);
           }}
-          //smaxDate={moment(new Date()).format('YYYY-MM-DD')}
+          maxDate={moment(new Date()).format('YYYY-MM-DD')}
           setselectedDate={date => {
             //setSelectedDate(moment(date).format("DD-MM-YYYY"));
             setshowCalender(!showCalender);
@@ -235,7 +235,7 @@ export default function DailySalesDashboard({route, navigation}) {
 
       <View style={{paddingHorizontal: 10, flex: 1}}>
         <CustomDropdown
-          headerTitle="Depot Name"
+          headerTitle="Publication Name"
           data={depotArr}
           selectedItem={depotItem?.name}
           itemHandler={item => {

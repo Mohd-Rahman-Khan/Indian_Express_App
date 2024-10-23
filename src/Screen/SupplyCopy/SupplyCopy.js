@@ -300,10 +300,43 @@ const SupplyCopy = ({navigation}) => {
               const reqFormatDt = moment(date).format('DD-MM-YYYY, dddd');
               setshowCalender(!showCalender);
               if (dateType == 'FD') {
-                setselectedFromDate(reqFormatDt);
-                setpassFromDateToApi(date);
+                if (date <= passToDateToApi) {
+                  setselectedFromDate(reqFormatDt);
+                  setpassFromDateToApi(date);
+                } else {
+                  Alert.alert(
+                    'Oops',
+                    'From date should be less than to date.',
+                    [{text: 'OK', onPress: async () => {}}],
+                    {cancelable: false},
+                  );
+                }
+
+                // if (reqFormatDt <= selectedToDate) {
+                //   setselectedFromDate(reqFormatDt);
+                //   setpassFromDateToApi(date);
+                // } else {
+                //   Alert.alert(
+                //     'Oops',
+                //     'From date should be less than to date.',
+                //     [{text: 'OK', onPress: async () => {}}],
+                //     {cancelable: false},
+                //   );
+                // }
               } else if (dateType == 'TD') {
-                if (reqFormatDt < selectedFromDate) {
+                // if (reqFormatDt < selectedFromDate) {
+                //   Alert.alert(
+                //     'Oops',
+                //     'To date should be greater than from date.',
+                //     [{text: 'OK', onPress: async () => {}}],
+                //     {cancelable: false},
+                //   );
+                // } else {
+                //   setselectedToDate(reqFormatDt);
+                //   setpassToDateToApi(date);
+                // }
+
+                if (date < passFromDateToApi) {
                   Alert.alert(
                     'Oops',
                     'To date should be greater than from date.',

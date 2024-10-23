@@ -176,9 +176,18 @@ export default function CollectionDashboard({route, navigation}) {
             setshowCalender(!showCalender);
 
             if (selectFromDate) {
-              setselectedFromDate(date);
-              setselectFromDate(false);
-              setfromDateToShow(formateDate);
+              if (formateDate <= toDateToShow) {
+                setselectedFromDate(date);
+                setselectFromDate(false);
+                setfromDateToShow(formateDate);
+              } else {
+                Alert.alert(
+                  'Oops',
+                  'From date should be less than to date.',
+                  [{text: 'OK', onPress: async () => {}}],
+                  {cancelable: false},
+                );
+              }
             } else {
               if (date < selectedFromDate) {
                 Alert.alert(

@@ -638,8 +638,29 @@ const PrintOrder = ({navigation}) => {
                     {cancelable: false},
                   );
                 } else {
-                  setselectedFromDate(reqFormatDt);
-                  setpassFromDateToApi(date);
+                  if (date <= passToDateToApi) {
+                    setselectedFromDate(reqFormatDt);
+                    setpassFromDateToApi(date);
+                  } else {
+                    Alert.alert(
+                      'Oops',
+                      'From date should be less than to date.',
+                      [{text: 'OK', onPress: async () => {}}],
+                      {cancelable: false},
+                    );
+                  }
+
+                  // if (reqFormatDt <= selectedToDate) {
+                  //   setselectedFromDate(reqFormatDt);
+                  //   setpassFromDateToApi(date);
+                  // } else {
+                  //   Alert.alert(
+                  //     'Oops',
+                  //     'From date should be less than to date.',
+                  //     [{text: 'OK', onPress: async () => {}}],
+                  //     {cancelable: false},
+                  //   );
+                  // }
                 }
               }
             } else if (dateType == 'TD') {
