@@ -195,6 +195,8 @@ PODS:
   - OpenSSL-Universal (1.1.1100)
   - Permission-Camera (2.2.2):
     - RNPermissions
+  - Permission-LocationWhenInUse (2.2.2):
+    - RNPermissions
   - PromisesObjC (2.1.1)
   - razorpay-pod (1.3.0)
   - RCT-Folly (2021.06.28.00-v2):
@@ -514,15 +516,15 @@ PODS:
     - RNFBApp
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNImageCropPicker (0.31.1):
+  - RNImageCropPicker (0.41.2):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.31.1)
-    - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.31.1):
+    - RNImageCropPicker/QBImagePickerController (= 0.41.2)
+    - TOCropViewController (~> 2.7.4)
+  - RNImageCropPicker/QBImagePickerController (0.41.2):
     - React-Core
     - React-RCTImage
-    - TOCropViewController
+    - TOCropViewController (~> 2.7.4)
   - RNNotifee (7.8.2):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.8.2)
@@ -557,11 +559,11 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.32.0):
+  - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
   - SocketRocket (0.6.1)
-  - TOCropViewController (2.7.3)
+  - TOCropViewController (2.7.4)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -599,6 +601,7 @@ DEPENDENCIES:
   - GoogleUtilities
   - OpenSSL-Universal (= 1.1.1100)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera.podspec`)
+  - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -696,6 +699,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera.podspec"
+  Permission-LocationWhenInUse:
+    :path: "../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -825,6 +830,7 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   Permission-Camera: 5d2aaf95592660b6dcb5e8d1d90ed5d0156cad02
+  Permission-LocationWhenInUse: 871e81c06c1fc578353fce962d5d8e6efa697f1a
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   razorpay-pod: ebc78907f756ace307e3fa4270ff684ebb9e291b
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
@@ -869,16 +875,16 @@ SPEC CHECKSUMS:
   RNFBApp: ad6ad2dd37ccf10e737ec8688208761026331d64
   RNFBMessaging: f75d2d54bbf6ddc29304e2f45152bc397a8b5b3f
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
+  RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
   RNReanimated: 1f117be601c59177816351a965bc57320b766c15
-  RNScreens: afdbd43bcd6c81559917054da18ad101b4395000
+  RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TOCropViewController: b9b2905938c0424f289ea2d9964993044913fac6
+  TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: fb6c0cf0b74cfd6b8b22157226b2004564f55b92
+PODFILE CHECKSUM: 8bc55b579171108b34d06e00cd644a91080da7e8
 
 COCOAPODS: 1.15.2

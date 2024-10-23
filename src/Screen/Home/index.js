@@ -31,12 +31,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 import DepotDropdownPopup from '../../comonent/DepotDropdownPopup/DepotDropdownPopup';
 import Dashboard from './Dashboard';
 import {useIsFocused} from '@react-navigation/native';
-// import Permissions, {
-//   PERMISSIONS,
-//   RESULTS,
-//   check,
-//   request,
-// } from 'react-native-permissions';
+import Permissions, {
+  PERMISSIONS,
+  RESULTS,
+  check,
+  request,
+} from 'react-native-permissions';
 
 const TODAY_DATE = moment().format('YYYY-MM-DD');
 
@@ -187,6 +187,18 @@ const Home = ({navigation, route}) => {
         },
       );
       console.log('granted', granted);
+    } else {
+      const granted = await request(
+        Platform.select({
+          android: PERMISSIONS.ANDROID.CAMERA,
+          ios: PERMISSIONS.IOS.CAMERA,
+        }),
+        {
+          title: 'Indian Express',
+          message: 'Indian Express want to access your camera permission.',
+        },
+      );
+      console.log('cameraPerm', granted);
     }
   };
 
@@ -467,9 +479,43 @@ const Home = ({navigation, route}) => {
           setIsPermissionGranted(false);
         }
       } else {
-        console.log('success');
-        getLocation(typeId, selectedItem);
-        setIsPermissionGranted(true);
+        // console.log('success');
+        // getLocation(typeId, selectedItem);
+        // setIsPermissionGranted(true);
+        const granted = await request(
+          Platform.select({
+            android: PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+            ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+          }),
+          {
+            title: 'Indian Express',
+            message:
+              'Indian Express want to access location data to enable identification of nearby locations.',
+          },
+        );
+
+        if (granted == 'granted') {
+          console.log('success');
+          getLocation(typeId, selectedItem);
+          setIsPermissionGranted(true);
+        } else {
+          Alert.alert(
+            'Location Alert',
+            'Please provide location permission from app settings in order to check-in/check-out.',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  if (Platform.OS === 'ios') {
+                    Linking.openURL('app-settings:');
+                  } else {
+                    Linking.openSettings();
+                  }
+                },
+              },
+            ],
+          );
+        }
       }
     } catch (err) {
       console.log('Err =>', err);
