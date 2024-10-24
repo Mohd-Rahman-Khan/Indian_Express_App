@@ -63,7 +63,7 @@ export default function Dashboard({data, role}) {
             </Text>
           </View>
 
-          {getDivisionValue[0].map((item, index2) => {
+          {getDivisionValue[0]?.map((item, index2) => {
             let getPublicationKey = Object.keys(item);
             let getPublicationValue = Object.values(item);
             return (

@@ -62,7 +62,7 @@ export default function Dashboard({data, role}) {
         );
       })}
     </View>
-  ) : role == 'Regional Manager' ? (
+  ) : role == 'Regional Manager' || role == 'City Head' ? (
     data?.map((renderItem, index) => {
       let getDivisionKey = Object.keys(renderItem);
       let getDivisionValue = Object.values(renderItem);

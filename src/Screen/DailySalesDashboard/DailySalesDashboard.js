@@ -29,63 +29,65 @@ export default function DailySalesDashboard({route, navigation}) {
   const [depotArr, setDepotArr] = useState([]);
   const [depotItem, setDepotItem] = useState('');
   const [dashboardData, setdashboardData] = useState([
-    // {
-    //   'DIV 1': [
-    //     {
-    //       PO: 0,
-    //     },
-    //     {
-    //       'Trade Supply': 0,
-    //     },
-    //     {
-    //       'Complimentary Copy': 10,
-    //     },
-    //     {
-    //       'Fresh Unsold': 0,
-    //     },
-    //     {
-    //       Return: 0,
-    //     },
-    //     {
-    //       'Total Fresh Unsold + Return': 0,
-    //     },
-    //     {
-    //       'NetPaid Sales': 0,
-    //     },
-    //     {
-    //       'Total Unsold %': 0,
-    //     },
-    //   ],
-    // },
-    // {
-    //   'DIV 2': [
-    //     {
-    //       PO: 0,
-    //     },
-    //     {
-    //       'Trade Supply': 0,
-    //     },
-    //     {
-    //       'Complimentary Copy': 10,
-    //     },
-    //     {
-    //       'Fresh Unsold': 0,
-    //     },
-    //     {
-    //       Return: 0,
-    //     },
-    //     {
-    //       'Total Fresh Unsold + Return': 0,
-    //     },
-    //     {
-    //       'NetPaid Sales': 0,
-    //     },
-    //     {
-    //       'Total Unsold %': 0,
-    //     },
-    //   ],
-    // },
+    {
+      'DIV 1': [
+        {
+          PO: 0,
+        },
+        {
+          'Trade Supply': 0,
+        },
+        {
+          'Complimentary Copy': 10,
+        },
+        {
+          'Fresh Unsold': 0,
+        },
+        {
+          Return: 0,
+        },
+        {
+          'Total Fresh Unsold + Return': 0,
+        },
+        {
+          'NetPaid Sales': 0,
+        },
+        {
+          'Total Unsold %': 0,
+        },
+      ],
+    },
+    {
+      'DIV 2': [
+        {
+          PO: 0,
+        },
+        {
+          'Trade Supply': 0,
+        },
+        {
+          'Complimentary Copy': 10,
+        },
+        {
+          'Fresh Unsold': 0,
+        },
+        {
+          Return: 0,
+        },
+        {
+          'Total Fresh Unsold + Return': 0,
+        },
+        {
+          'NetPaid Sales': 0,
+        },
+        {
+          'Total Unsold %': 0,
+        },
+      ],
+    },
+  ]);
 
+  const data = [
     {
       PO: 1,
     },
@@ -113,7 +115,7 @@ export default function DailySalesDashboard({route, navigation}) {
     {
       'Total Unsold %': 1,
     },
-  ]);
+  ];
 
   const [isLoading, setisLoading] = useState(false);
   const [selectedFromDate, setselectedFromDate] = useState(
@@ -280,7 +282,15 @@ export default function DailySalesDashboard({route, navigation}) {
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{flex: 1, marginBottom: 10, marginTop: 10}}>
-            <Dashboard role={userData?.role} data={dashboardData} />
+            <Dashboard
+              role={userData?.role}
+              data={
+                userData?.role == 'Regional Manager' ||
+                userData?.role == 'City Head'
+                  ? dashboardData
+                  : data
+              }
+            />
           </ScrollView>
         ) : (
           <View
@@ -322,7 +332,7 @@ export default function DailySalesDashboard({route, navigation}) {
           <Image style={styles.plusIcon} source={images.file} />
         </TouchableOpacity>
 
-        {roleBasedGrid == 1 ? (
+        {roleBasedGrid == 1 || roleBasedGrid == 3 ? (
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('UnsoldRetun');

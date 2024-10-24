@@ -438,7 +438,10 @@ const Collection = ({navigation}) => {
         submitFinalAction(actionId, 'cash');
       }
       if (paymentModeItem.name == 'online') {
-        if (userData.role == 'Collection Executive') {
+        if (
+          userData.role == 'Collection Executive' ||
+          userData.role == 'Circulation Executive'
+        ) {
           submitFinalAction(actionId, 'online');
         } else {
           paymentApi(actionId);

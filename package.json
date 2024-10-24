@@ -41,6 +41,7 @@
     "react-native-image-crop-picker": "^0.41.2",
     "react-native-image-picker": "^7.1.2",
     "react-native-multi-selectbox": "^1.5.0",
+    "react-native-permissions": "^2.2.2",
     "react-native-prevent-screenshots": "^2.0.0-nightly.1",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-qrcode-scanner-view": "^2.0.0",

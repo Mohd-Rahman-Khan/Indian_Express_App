@@ -15,7 +15,8 @@ export default function SelectionOfPrintOrder({route, navigation}) {
     if (type == 'PrintOrder') {
       if (
         parseUserData?.role == 'Circulation Executive' ||
-        parseUserData?.role == 'Regional Manager'
+        parseUserData?.role == 'Regional Manager' ||
+        parseUserData?.role == 'City Head'
       ) {
         navigation.navigate('PrintOrderDashboard');
       } else {
@@ -24,7 +25,8 @@ export default function SelectionOfPrintOrder({route, navigation}) {
     } else {
       if (
         parseUserData?.role == 'Circulation Executive' ||
-        parseUserData?.role == 'Regional Manager'
+        parseUserData?.role == 'Regional Manager' ||
+        parseUserData?.role == 'City Head'
       ) {
         navigation.navigate('SamplingCopyDashboard');
       } else {
